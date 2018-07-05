@@ -5,22 +5,21 @@ class Chessboard:
     """"chessboard_positions is 2 dimensional dictionary, first index is x and the second is y
     [x,y]"""
 
-    def __init__(self, size_x, size_y): #spacje wszedzie
-        self.size_x=size_x
+    def __init__(self, size_x, size_y):
+        self.numb_of_w_pawns = 0
+        self.numb_of_b_pawns = 0
+        self.size_x = size_x
         self.size_y = size_y
-        # self.bottom_coords = ''
         self.bottom_coords = str()
-        self._chessboard={}
+        self._chessboard = {}
         for x_coord in range(size_x):
             for y_coord in range(size_y):
-                self._chessboard[(x_coord + 1, y_coord + 1)]=None
+                self._chessboard[(x_coord + 1, y_coord + 1)] = None
 
         # zamiast printow mozesz podepnac sobie biblioteke logger
         print("map has been created")
         print(self._chessboard)
 
-#get i bez dict
-# lepiej, poczytaj o getterach i setterach
     def get_chessboard_positions(self):
         return self._chessboard
 
@@ -29,24 +28,14 @@ class Chessboard:
         # odstepy pomeidzy zmiennymi PEP-8/ pobaw sie pylint'em
         for x, y in self._chessboard:
             id_numb += 1
-            """ Im mniej zagniezdzen tym kod bardziej czytelny
-            Nie wiem po co ten warunek jest. Upewnij sie czy nie rpzekombinowales
-            if (x+y)%2!=0:
-                continue
-            if y<self.size_y/2:
-                self._chessboard_positions[x, y]= Pawn.Pawn('w') # Pawn.Pawn(color='w')
-            if y>self.size_y/2+1:
-                self._chessboard_positions[x, y] = Pawn.Pawn('b')
-            """
+
             if (x+y) % 2 == 0:
                 if y < self.size_y / 2:
-                    # Jesli pionek ma wlasciwosc kolor, zadeklaruj jakies zmienne w pliku z pionkami ktory bedzie trzymal ten kolor tj:
-                    # WHITE = 'w'
-                    # BLACK = 'b'
-                    # jako ze to sa jedyne kolory jakie moga byc, mozesz te zmienne zadeklarowac jako zmienne klasy
                     self._chessboard[x, y] = pawn.Pawn(color = 'w', id_number = id_numb)
+                    self.numb_of_w_pawns += 1
                 if y > self.size_y/2+1:
                     self._chessboard[x, y] = pawn.Pawn(color = 'b', id_number = id_numb)
+                    self.numb_of_b_pawns += 1
 
     def show_board(self):
         for y in range(1, self.size_y+1):
@@ -94,7 +83,7 @@ class Chessboard:
                 if self.is_input_valid(sel_x+attack_x, sel_y+attack_y):
                     if self._chessboard[sel_x + attack_x, sel_y + attack_y] is not None:
                         if self._chessboard[sel_x + attack_x, sel_y + attack_y].color != self._chessboard[sel_x, sel_y].color:
-                            if self.is_input_valid(sel_x + attack_x, sel_y + attack_y):
+                            if self.is_input_valid(sel_x + attack_x+(attack_x/abs(attack_x)), sel_y + attack_y+(attack_y/abs(attack_y))):
                                 if self._chessboard[sel_x + attack_x+(attack_x/abs(attack_x)), sel_y + attack_y+(attack_y/abs(attack_y))] is None:
                                     possible_attacks.append([sel_x + attack_x + (attack_x/abs(attack_x)),
                                                              sel_y + attack_y + (attack_y / abs(attack_y))])
@@ -136,20 +125,12 @@ class Chessboard:
     def is_move_possible(self, sel_x, sel_y):
         #  I could call get_possible_moves and get possible attack and
         #  check if they are empty but this seems more resource friendly
-        for move_x, move_y in self._chessboard[sel_x, sel_y].move_offset:
-            if self.is_input_valid(sel_x+move_x, sel_y+move_y):
-                if self._chessboard[sel_x+move_x, sel_y+move_y] is None:
-                    return True
-        for attack_x, attack_y in self._chessboard[sel_x, sel_y].attack_offset:
-            if self.is_input_valid(sel_x+attack_x,sel_y+attack_y):
-                if self._chessboard[sel_x + attack_x, sel_y + attack_y] is not None:
-                    if self._chessboard[sel_x + attack_x, sel_y + attack_y].color !=\
-                            self._chessboard[sel_x, sel_y].color:
-                        if self.is_input_valid(sel_x + attack_x, sel_y + attack_y):
-                            if self._chessboard[sel_x + attack_x+(attack_x/abs(attack_x)), sel_y + attack_y +
-                                    (attack_y/abs(attack_y))] is None:
-                                return True
+        if len(self.get_possible_moves(sel_x, sel_y)) > 0:
+            return True
+        if len(self.get_possible_attacks(sel_x, sel_y)) > 0:
+            return True
         return False
+
 
     def move_pawn(self, sel_x, sel_y,multi_attack=False):
         if not multi_attack:
@@ -166,6 +147,10 @@ class Chessboard:
         if [dest_x, dest_y] in possible_attacks:
             self._chessboard[dest_x, dest_y] = self._chessboard[sel_x, sel_y]
             self._chessboard[sel_x, sel_y] = None
+            if self._chessboard[(sel_x + dest_x) / 2, (sel_y + dest_y) / 2].color == 'w':
+                self.numb_of_w_pawns -= 1
+            else:
+                self.numb_of_b_pawns -= 1
             self._chessboard[(sel_x+dest_x)/2, (sel_y+dest_y)/2] = None
             if dest_y == 8:
                 if self._chessboard[dest_x, dest_y].color == 'w':
@@ -175,3 +160,11 @@ class Chessboard:
                     self._chessboard[dest_x, dest_y].make_queen()
             if self.get_possible_attacks(dest_x, dest_y) != []:
                 self.move_pawn(dest_x, dest_y, multi_attack=True)
+
+    def is_white_player_won(self):
+        if self.numb_of_b_pawns <= 0:
+            return True
+
+    def is_black_player_won(self):
+        if self.numb_of_w_pawns <= 0:
+            return True

@@ -6,7 +6,7 @@ import chessboard
 class Game_Manager:
     def __init__(self):
 
-        self.chessboard=chessboard.Chessboard(8, 8)
+        self.chessboard = chessboard.Chessboard(8, 8)
         self.white_player = player.Player('w', self.chessboard)
         self.black_player = player.Player('b', self.chessboard)
         self.chessboard.set_pawns()
@@ -16,8 +16,14 @@ class Game_Manager:
         while True:
             self.chessboard.show_board()
             self.white_player.player_turn()
+            if self.chessboard.is_white_player_won():
+                print('White Player won')
+                break
             self.chessboard.show_board()
             self.black_player.player_turn()
+            if self.chessboard.is_black_player_won():
+                print('Black Player won')
+                break
 
 
 # zrob plik main, ktory bedzie mial ifa z mainem11

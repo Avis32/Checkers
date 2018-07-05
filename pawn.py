@@ -1,7 +1,6 @@
 
 
 class Pawn:
-
     """ color can be 'w' or 'b' """
     def __init__(self, color, id_number):
         self._is_queen = False
