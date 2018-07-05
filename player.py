@@ -5,8 +5,6 @@ import chessboard
 class Player:
     """ color can be 'w' or 'b' """
     def __init__(self, choosen_color, chessboard):
-        # czemu player jest z duzej?
-        # sama nazwa color wystarczy, nie musisz dodawac palyer zeby wszycy wiedzieli ze to kolor gracza
         self.color = choosen_color
         self.chessboard = chessboard
 
