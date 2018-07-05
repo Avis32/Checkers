@@ -88,7 +88,7 @@ class Chessboard:
     def get_possible_attacks(self, sel_x, sel_y):
         possible_attacks = []
         directions = [[1, 1], [-1, 1], [1, -1], [-1, -1]]
-        #todo simplify normal pawn movement
+        # todo simplify normal pawn movement
         if not self._chessboard[sel_x, sel_y].is_queen():
             for attack_x, attack_y in directions:
                 if self.is_input_valid(sel_x+attack_x, sel_y+attack_y):
