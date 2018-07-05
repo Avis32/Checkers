@@ -19,6 +19,7 @@ class Game_Manager:
             self.chessboard.show_board()
             self.black_player.player_turn()
 
+
 # zrob plik main, ktory bedzie mial ifa z mainem11
 #https://docs.python.org/3/library/__main__.html11
 
