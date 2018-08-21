@@ -20,7 +20,7 @@ class Player:
                 if len(selected_coords) == 2:
                     x, y=[int(selected_coords[0]), int(selected_coords[1])]
                     break
-            else: # else nie potrzbeny
+            else:
                 print("invalid input:{}".format(selected_coords))
                 self.player_turn()
 
@@ -37,7 +37,7 @@ class Player:
                         self.player_turn()
                 else:
                     self.player_turn()
-            else:  # nie potrzebny
+            else:
                 print("invalid input")
                 self.player_turn()
             break

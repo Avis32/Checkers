@@ -15,8 +15,6 @@ class Chessboard:
         for x_coord in range(size_x):
             for y_coord in range(size_y):
                 self._chessboard[(x_coord + 1, y_coord + 1)] = None
-
-        # zamiast printow mozesz podepnac sobie biblioteke logger
         print("map has been created")
         print(self._chessboard)
 
@@ -25,7 +23,6 @@ class Chessboard:
 
     def set_pawns(self):
         id_numb = 0
-        # odstepy pomeidzy zmiennymi PEP-8/ pobaw sie pylint'em
         for x, y in self._chessboard:
             id_numb += 1
 
@@ -49,14 +46,6 @@ class Chessboard:
                         print(self._chessboard[x, y].color.upper(), sep=' ', end=' ', flush=False)
                     else:
                         print(self._chessboard[x, y].color, sep=' ', end=' ', flush=False)
-        # Zamiast robic jakas magie z printami, plus flush, mozesz zrobic zwyczajnie zmienna ktora Ci to przechowa
-        # for y in range(1, self.size_y+1):
-        #     row = ''
-        #     for x in range(1, self.size_x+1):
-        #         field = self._chessboard_positions[x, y]
-        #         row += ' '.join('x' if not field else field.color)
-        #     print(row)
-        # To jest pseudo kod, nie testowalem
 
     def get_object_by_position(self, pos_x, pos_y):
         return self._chessboard[pos_x, pos_y]

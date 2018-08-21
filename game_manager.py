@@ -12,7 +12,6 @@ class Game_Manager:
         self.chessboard.set_pawns()
 
     def play(self):
-        # gra raczej powinna trwac do czasu wygranej a nie w nieskonczonosc
         while True:
             self.chessboard.show_board()
             self.white_player.player_turn()
@@ -25,9 +24,6 @@ class Game_Manager:
                 print('Black Player won')
                 break
 
-
-# zrob plik main, ktory bedzie mial ifa z mainem11
-#https://docs.python.org/3/library/__main__.html11
 
 c = Game_Manager()
 c.play()

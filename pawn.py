@@ -18,6 +18,3 @@ class Pawn:
     def is_queen(self):
         return self._is_queen
 
-    # w obecnym zalozeniu, to chessboard powinnien to ogarniac.
-
-    # w obecnym zalozeniu, to chessboard powinnien to ogarniac.
